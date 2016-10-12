@@ -1,24 +1,40 @@
 extends ../layout
 
 block content
+	include ../message.jade
 	h2= post.title
 	<hr>
-	b Create Date:
-	p= post.create_date.toDateString()
-	b Last Modified:
-	p= post.modified_date.toDateString()
-	b Content:
 	p(style=" text-align: justify")= post.content
+	hr
+	p='Create at: '+ post.create_date.toDateString() + ' | ' + 'Last Modified: ' + post.modified_date.toDateString()
 	if (typeof(user) != 'undefined' && post.author._id.equals(user._id))
 		a.btn.btn-info.btn-md(href='/posts/edit/#{post._id}') Edit
-		
-	br
+	<br>
 	b Author: 
-	a(href="/user/#{post.author._id}")= post.author.display_name
-	p <b>Tags:</b>
-		each tag, i in post.tags
-			a(href='/tags/#{tag.name}')= tag.name
-			if (i < post.tags.length - 1)
-				<small> , </small>
-	p Comment
-	input.form-control(style="text", placeholder="Comment here")
+	a(href="/profile/#{post.author._id}")= post.author.display_name
+	p Category:
+		a(href="/posts/category/#{post.category}")= post.category
+	h4 Comments
+	#addComment
+	if (typeof(user) != 'undefined')
+		form(name="createComment",method="post", action="/posts/view")
+			.form-group
+				input#idPost.form-control(type="hidden", name="id", value='#{post._id}')
+			.form-group
+				input#author.form-control(type="hidden", value="#{user.display_name}", name="author")
+			.form-group
+				textarea#content.form-control(rows="2", name="content")
+			button#btnCreateComment.btn.btn-primary(type="submit") Comment
+		br
+	else
+		a.btn.btn-success.btn-block.btn-lg(href="/login") Login to comment
+		br
+	each comment, i in post.comments
+		.panel.panel-default
+			.panel-heading
+				img.img-circle(src="/avatar/avatar-default.jpg", width=30, height=30)
+				&nbsp; 
+				b= comment.author
+			.panel-body
+				p= comment.content
+				small(style="float:right")= comment.date.toDateString()

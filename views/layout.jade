@@ -4,55 +4,75 @@ html
 		title= title
 		link(rel='stylesheet', href='/stylesheets/bootstrap.css')
 		link(rel='stylesheet', href='/stylesheets/style.css')
+		meta(name="viewport", content="width=device-width, initial-scale=1")
 		
 	body
-		nav.navbar.navbar-default.navbar-fixed-top(role='navigation')
-			.container
-				.navbar-header
-					a.navbar-toggle.collapsed(type="button", href="#", data-toggle="collapse", data-target="#collapse-1", aria-expanded="false")
-						span.sr-only Toggle navigation
-						span.icon-bar
-						span.icon-bar
-						span.icon-bar
-					a.navbar-brand(href="/posts") Home
-				.collapse.navbar-collapse#collapse-1
-					ul.nav.navbar-nav
-						li: a(href="/posts/addpost") Create Post
-						//- li: a(href="/posts") Post List
-						li: a(href="/") Populate Table
-						li.dropdown
-							a(href="#", data-toggle='dropdown').dropdown-toggle Dropdown
-								b.caret
-							ul.dropdown-menu
-								li: a(href="/userlist") User List
-								li: a(href="/manageraccount") Manager Account
-					form.navbar-form.navbar-left
-						.form-group
-							input.form-control(type="text", placeholder="Search")
-						&nbsp;
-						button.btn.btn-default(type="submit") Search
-					ul.nav.navbar-right.navbar-nav
-						li.dropdown
-							if (typeof(user) !== 'undefined')
-								a.dropdown-toggle(href="#", data-toggle="dropdown", role="button", aria-haspopup="true", aria-expanded="false")= user.display_name
-									b.caret
-								ul.dropdown-menu
-									li: a(href="/logout") Logout
-									li: a(href="/changeinfo/#{user._id}") Change Info
-									li: a(href="/posts/user/#{user._id}") My Post
-							else
-								a.dropdown-toggle(href="#", data-toggle="dropdown", role="button", aria-haspopup="true", aria-expanded="false") Guest
-									b.caret
-								ul.dropdown-menu
-									li: a(href="/login") Login
-		.container
-			.col-md-8
-				block content
-			.col-md-4.sidebar
-				block sidebar
-		footer.footer
-			.container
-				p.text-muted The First App Using Node and Express &copy;2016
+		.wrapper
+			.header
+				nav.navbar.navbar-inverse.navbar-fixed-top(role='navigation')
+					.container
+						.navbar-header
+							a.navbar-toggle.collapsed(type="button", href="#", data-toggle="collapse", data-target="#collapse-1", aria-expanded="false")
+								span.sr-only Toggle navigation
+								span.icon-bar
+								span.icon-bar
+								span.icon-bar
+							a.navbar-brand(href="/posts") Simple Forum 
+						.collapse.navbar-collapse#collapse-1
+							ul.nav.navbar-nav
+								li: a(href="/posts/create") Create Post
+								//- li: a(href="/posts") Post List
+								li: a(href="/") Populate Table
+								li.dropdown
+									a(href="#", data-toggle='dropdown').dropdown-toggle Dropdown
+										b.caret
+									ul.dropdown-menu
+										li: a(href="/userlist") User List
+										li: a(href="/manageraccount") Manager Account
+							form.navbar-form.navbar-left
+								.form-group
+									input.form-control(type="text", placeholder="Search")
+								&nbsp;
+								button.btn.btn-default(type="submit") Search
+							ul.nav.navbar-right.navbar-nav
+								li.dropdown
+									if (typeof(user) !== 'undefined')
+										a.dropdown-toggle(href="#", data-toggle="dropdown", role="button", aria-haspopup="true", aria-expanded="false")
+											img.img-circle(src="/avatar/avatar-default.jpg", width=25, height=25)
+											b.caret
+										ul.dropdown-menu
+											li: a(href="")= 'Signed in as ' + user.username
+											li: a(href="/profile/#{user._id}") My Profile
+											li: a(href="/posts/user/#{user._id}") Manager My Post
+											li: a(href="/logout") Logout
+									else
+										a.dropdown-toggle(href="#", data-toggle="dropdown", role="button", aria-haspopup="true", aria-expanded="false")
+											b.caret
+										ul.dropdown-menu
+											li: a(href="/login") Login
+			.content
+				.container
+					.col-md-8
+						block content
+					.col-md-4.sidebar
+						block sidebar
+			hr
+			.myown-footer
+				.container
+					.row
+						.col-xs-6.col-sm-4.col-md-4.col-lg-4
+							h4.text-center Help
+							p Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris nisl elit, scelerisque vitae rhoncus eu, aliquam ultricies lectus. Maecenas facilisis, leo ac porta mattis, magna urna porta risus, vitae eleifend eros felis in lectus. Praesent mattis enim turpis, eu luctus neque pellentesque quis.
+						.col-xs-6.col-sm-4.col-md-4.col-lg-4
+							h4.text-center About Us
+							p This is simple project using NodeJS ExpressJS and MongoDB. Website provides an open environment. People can exchange information with each other. Hopefully it will give you a great experience with a simple interface
+						.col-xs-6.col-sm-4.col-md-4.col-lg-4
+							h4.text-center FAQs
+							a(href="", style="color: #333333") How to create account and post new article
+							br
+							a(href="", style="color: #333333") I dont change my profile and update my avatar
+							br
+							a(href="", style="color: #333333") Delete comment in a post
 		script(src='/javascripts/jquery.js')
 		script(src='/javascripts/bootstrap.js')
 		script(src='/javascripts/mystyle.js')

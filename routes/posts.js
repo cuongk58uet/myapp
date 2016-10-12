@@ -5,25 +5,15 @@ var mongoose = require('mongoose');
 var Post = require('../models/Post.js');
 var auth = require('./mymiddleware.js');
 
-//Authenticated
-/*var isAuthenticated = function (req, res, next) {
-    if (req.isAuthenticated()){
-        return next();
-    } else{
-        res.redirect('/posts');
-    }
-}*/
-
 //GET Home page
 router.get('/', function(req, res, next){
     Post.find({}).populate('author').sort('-create_date').exec(function(err, posts){
         if(err) return next(err);
         res.render('./posts/index', {
             'posts': posts,
-            title: 'Post Home',
+            title: 'Simple Forum',
             user: req.user,
         });
-        //console.log(req.body);
     });
 });
 
@@ -35,16 +25,15 @@ router.get('/data', function(req, res, next){
 });
 
 /* POST addpost Service */
-router.post('/addpost', auth.isLogged, function(req, res) {
-    req.body.tags = req.body.tags.replace(/(?:\r\n|\r|\n)''/g).split(",").map(function(tag){
+router.post('/create', auth.isLogged, function(req, res) {
+    /*req.body.tags = req.body.tags.replace(/(?:\r\n|\r|\n)''/g).split(",").map(function(tag){
         return { "name": tag };
-    });
+    });*/
     var newPost = new Post(req.body);
-    console.log(req);
     newPost.save(function(err){
         if(err){
             req.session.message.error.push('' + err);
-            res.redirect('/posts/addpost');
+            res.redirect('/posts/create');
         } else{
             req.session.message.info.push('Congratulations! Create post success!');
             res.redirect('/posts');
@@ -54,13 +43,11 @@ router.post('/addpost', auth.isLogged, function(req, res) {
 });
 
 //GET addpost
-router.get('/addpost', auth.isLogged,function(req, res){
+router.get('/create', auth.isLogged,function(req, res){
     res.render('./posts/add',{
         title: 'Create New Post',
         user: req.user
     });
-    //console.log(req.body);
-
 });
  
 
@@ -78,6 +65,32 @@ router.get('/view/:id', function(req, res){
             //console.log(req);
         }
     });
+});
+
+router.post('/view', function(req, res, next){
+    Post.findById(req.body.id, function(err, post){
+    if(!post){
+         return next(new Error('Error! Try again'));
+    } else{
+        var comment = {
+            author : req.body.author,
+            content: req.body.content,
+            date : Date.now()
+        };
+        post.comments.push(comment);
+        post.save(function(err){
+            if(err){
+                req.session.message.error.push('Failed. Please try again!' + err);
+                //console.log('Error');
+
+            } else{
+                //console.log(req);
+                //req.session.message.info.push('Comment success!');
+                res.redirect(req.get('referer'));
+            }
+        });
+    }
+  });
 });
 
 /* GET /posts/edit/:id */
@@ -144,13 +157,38 @@ router.delete('/delete/:id', auth.isLogged, function(req, res, next) {
 });
 
 router.get('/user/:id', function(req, res, next){
-    Post.find({'author.user_id': req.params.id}).sort('-create_date').exec(function(err, posts){
+    res.render('./posts/userpost', {
+        title: 'Manager My Post',
+        user: req.user
+    });
+});
+
+router.get('/mypost', auth.isLogged ,function(req, res, next){
+    Post.find().populate({
+        path: 'author',
+        match: {
+            _id: req.user._id
+        }
+    }).sort('-create_date').exec(function(err, posts){
         if(err) return next(err);
-        res.render('./posts/userpost', {
-            title: 'Post Of User',
-            'posts' : posts,
-            user: req.user
+        posts = posts.filter(function(post){
+            return post.author;
         });
+        res.json(posts);
+    });
+});
+
+router.get('/category/:name', function(req, res, next){
+    Post.find({'category':req.params.name}).exec(function(err, posts){
+        if(err){
+            res.send('Not Found!')
+        } else{
+            res.render('./posts/category',{
+                title: 'Category ' + req.params.name,
+                user: req.user,
+                posts: posts
+            });
+        }
     });
 });
 

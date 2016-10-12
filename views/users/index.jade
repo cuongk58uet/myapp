@@ -1,11 +1,31 @@
 extends ../layout
 
 block content
-	table.table.table-striped
-		thead
-			th User
-		tbody
-			each user, i in users
-				tr
-					td= user.username
-	a.btn.btn-primary(href="/users/add") Create User
+	#postList
+		include ../message.jade
+		each post, i in posts
+			h4: a(href='/posts/view/#{post._id}')= post.title
+			p(style='text-align: justify')= post.content
+
+			<small class="meta muted"> #{post.create_date.toDateString()} </small>
+			<small class="meta muted"> | Author:  #{post.author.display_name} </small>
+			<small class="meta muted"> | Category:  #{post.category} </small>
+			hr
+block sidebar
+	if (!user)
+		.panel.panel-default
+			.panel-heading
+				b Recent Posts
+			.panel-body
+				each post, i in posts
+					a(href='/posts/view/#{post._id}')= post.title
+					br
+	if (user)
+		.panel.panel-default
+			.panel-heading
+				b Recent Posts
+			.panel-body
+				each post, i in posts
+					a(href='/posts/view/#{post._id}')= post.title
+					br
+		

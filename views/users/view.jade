@@ -1,6 +1,0 @@
-extends ../layout
-
-block content
-	p Hello <b> #{current_user.display_name} </b>
-	if (typeof(user) != 'undefined' && current_user._id === user._id)
-		a.btn.btn-info.btn-md(href="/changeinfo/#{user._id}") Change Info

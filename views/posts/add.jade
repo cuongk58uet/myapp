@@ -4,7 +4,7 @@ block content
 	include ../message.jade
 	h4 Create a new post
 	#createPost
-		form(name="createpost",method="post", action="/posts/addpost")
+		form(name="createpost",method="post", action="/posts/create")
 			.form-group
 				input#author.form-control(type="hidden", value="#{user._id}", name="author")
 			.form-group
@@ -14,6 +14,17 @@ block content
 				label Content
 				textarea#contentPost.form-control(rows="10", name="content")
 			.form-group
-				label Tags
-				textarea#tagsPost.form-control(rows="2", name="tags")
+				label Category
+				select.form-control#category(name="category")
+					option(value="Life-Arts") Life/Arts
+					option(value="Technology") Technology
+					option(value="Culture-Recreation") Culture/Recreation
+					option(value="Science") Science
+					option(value="Other") Other
 			button#btnAddPost.btn.btn-primary(type="submit") Create
+	script.
+		$(document).ready(function(){
+			$("button").click(function(){
+				$("#contentPost") = $("#contentPost").val().replace(/\n/g, '<br/>');
+			});
+		});

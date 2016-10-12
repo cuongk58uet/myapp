@@ -1,0 +1,20 @@
+extends ../layout
+
+block content
+	h2= title
+	hr
+	if (typeof(posts) !== 'undefined' && posts.length != 0)
+		each post, i in posts
+			.panel.panel-default
+				.panel-heading
+					h4=post.title
+				.panel-body
+					.contentpost(style="padding: 10px")
+						p(style='text-align: justify')= post.content
+						<small> <b>Created:</b> #{post.create_date.toDateString()} </small>
+						<small> | <b>Author:</b>  #{post.author.display_name} </small>
+						<small> | <b>Category:</b> #{post.category} </small>
+						a.btn.btn-primary.btn-md(href='/posts/view/#{post._id}', style="float:right") Read more
+	else
+		h4 No post yet
+		a.btn.btn-md.btn-info(href="/posts") Back Home

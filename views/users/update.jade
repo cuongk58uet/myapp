@@ -1,0 +1,18 @@
+extends ../layout
+
+block content
+	form(role="form", method="post", action="/updateprofile")
+			table.table.table-hover
+				thead
+					tr
+						th Update Profile
+				tbody
+					tr
+						td: p Name:
+						td: input#changeDisplayName.form-control(type="text", name="display_name", value="#{user.display_name}")
+					tr
+						td: p Address:
+						td: input#address.form-control(type="text", name="address", value="#{user.address}")
+					tr
+						td
+						td: button#changeInfo.btn.btn-md.btn-success(type="submit", style="float:right") Save

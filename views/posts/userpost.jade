@@ -1,34 +1,12 @@
 extends ../layout
 
 block content
-	if (posts.length)
+	#myPost
 		table.table.table-striped
 			thead
-				tr
-					th My Post
-					th
-					th Actions
-					th
+				th Title
+				th
+				th Actions
+				th
 			tbody
-				each post, i in posts
-						tr
-							td: a(href='/posts/view/#{post._id}')= post.title
-							td: a.btn.btn-info.btn-md(href="/posts/view/#{post._id}") View
-							td: a.btn.btn-success.btn-md(href="/posts/edit/#{post._id}") Edit
-							td: a.btn.btn-danger.btn-md(href="/posts/delete/#{post._id}") Delete
-	else
-		h4 You don't have any post. Click <a href="/posts/addpost">here </a> to create new post
 block sidebar
-	if (!user)
-		b You aren't login. Please login here
-		a.btn.btn-primary.btn-lg.btn-block(href="/login") Login
-		<center><b>OR</b></center>
-		a.btn.btn-success.btn-lg.btn-block(href="/signup") SignUp
-	if (user)
-		p You are currently logged in as <b>#{user.display_name}</b>
-		a.btn.btn-primary(href="/posts/addpost") Create Post
-		&nbsp;
-		a.btn.btn-primary.btn-md(href="/changeinfo/#{user._id}") Change Info
-		</br> </br>
-		a.btn.btn-success.btn-lg.btn-block(href="/logout") Logout
-		</br>

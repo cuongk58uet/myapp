@@ -8,12 +8,13 @@ $(document).ready(function() {
 	// Populate the user table on initial page load
 	populateTable_Post();
 	populateTable_User();
+	populate_myPost();
 	// Add User button click
 	$('#btncreatePost').on('click', createPost);
 	// Delete User link click
     $('#postList table tbody').on('click', 'td a.btn.btn-danger', deletePost);
     $('#userList table tbody').on('click', 'td a.btn.btn-danger', deleteUser);
-    
+    $('#myPost table tbody').on('click', 'td a.btn.btn-danger', deletePost);
 
 });
 
@@ -107,17 +108,20 @@ function createPost(event) {
 
 		// If it is, compile all user info into one object
 		var newpost = {
+			'author': $('#createPost .form-group #author').val(),
 			'title': $('#createPost .form-group input#titlePost').val(),
-			'content': $('#createPost .form-group textarea#contentPost').val().replace(/\n/g, '<br/>')
+			'content': $('#createPost .form-group textarea#contentPost').val().replace(/\n/g, '<br/>'),
+			'category': $('#createPost .form-group select#category').val(),
+
 		}
 
 		// Use AJAX to post the object to our adduser service
 		$.ajax({
 			type: 'POST',
 			data: newpost,
-			url: '/posts/addpost',
+			url: '/posts/create',
 			dataType: 'JSON'
-		}).done(function( response ) {
+		}).done(function(response) {
 
 			// Check for successful (blank) response
 			if (response.msg === '') {
@@ -128,6 +132,7 @@ function createPost(event) {
 
 				// Update the table
 				populateTable_Post();
+				$(location).attr('href', 'localhost:3000/posts')
 
 			}
 			else {
@@ -165,6 +170,7 @@ function deletePost(event) {
             // Check for a successful (blank) response
             if(response.msg === ''){
             	populateTable_Post();
+            	populate_myPost();
             } else{
             	alert('Error: ' + response.msg);
             }
@@ -217,4 +223,28 @@ function deleteUser(event) {
 
     }
 
+};
+
+function populate_myPost() {
+
+	// Empty content string
+	var tableContent = '';
+
+	// jQuery AJAX call for JSON
+	$.getJSON('/posts/mypost', function(data) {
+		// Stick our user data array into a userlist variable in the global object
+		//myPostData = data;
+		// For each item in our JSON, add a table row and cells to the content string
+		$.each(data, function(){
+			tableContent += '<tr>'
+			tableContent += '<td><a href="/posts/view/' + this._id + '">' + this.title + '</a></td>';
+			tableContent += '<td><a href="/posts/view/' + this._id + '" class="btn btn-info">View</a></td>';
+			tableContent += '<td><a href="/posts/edit/' + this._id + '" class="btn btn-success">Edit</a></td>';
+			tableContent += '<td><a href="/posts/delete/' + this._id + '" class="btn btn-danger" rel="' + this._id + '">Delete</a></td>';
+			tableContent += '</tr>'
+		});
+
+		// Inject the whole content string into our existing HTML table
+		$('#myPost table tbody').html(tableContent);
+	});
 };

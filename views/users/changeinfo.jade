@@ -1,8 +1,0 @@
-extends ../layout
-
-block content
-	form(role="form", method="post", action="/changeinfo")
-		.form-group
-			label Change display Name
-			input#changeDisplayName.form-control(type="text", name="display_name", value="#{user.display_name}")
-		button#changeInfo.btn.btn-md.btn-primary(type="submit") Save

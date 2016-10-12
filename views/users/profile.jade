@@ -1,0 +1,20 @@
+extends ../layout
+
+block content
+	include ../message.jade
+	.panel.panel-primary
+		.panel-heading Profile
+		.panel-body
+			table.table
+				tbody
+					tr
+						td(rowspan=3, style="width: auto")
+							img.img-circle(src="/avatar/avatar-default.jpg", width="100px", height="100px")
+					tr
+						td: p Display Name:
+						td: b #{result.display_name}
+					tr
+						td: p Address:
+						td: b #{result.address}
+			if (check)
+				a.btn.btn-primary.btn-md(href="/updateprofile/#{result._id}") Change Info
