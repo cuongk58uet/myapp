@@ -4,7 +4,7 @@ var userSchema = new mongoose.Schema({
   username: {type: String, required:[true, 'Username cannot be blank']},
   password: String,
   display_name: {type: String, default: 'New User'},
-  address: String,
+  address: {type: String, default: 'Việt Nam'},
   avatar: {type: String, default: '/avatar/avatar-default.jpg'}
   // admin: Boolean
 });
