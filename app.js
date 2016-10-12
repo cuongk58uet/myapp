@@ -10,13 +10,13 @@ var passport = require('passport');
 var LocalStrategy = require('passport-local').Strategy;
 var flash = require('connect-flash');
 // Use native Node promises
-mongoose.Promise = global.Promise;
+/*mongoose.Promise = global.Promise;
 mongoose.connect('mongodb://localhost/database')
 	.then(() => console.log('Connect success'))
-	.catch((err) => console.error(err));
-/*mongoose.connect('mongodb://cuongnm_58:manhcuong95@ds029585.mlab.com:29585/mymongodb')
-	.then(() => console.log('Connect success'))
 	.catch((err) => console.error(err));*/
+mongoose.connect('mongodb://cuongnm_58:manhcuong95@ds029585.mlab.com:29585/mymongodb')
+	.then(() => console.log('Connect success'))
+	.catch((err) => console.error(err));
 var users = require('./routes/users');
 var posts = require('./routes/posts');
 
