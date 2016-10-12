@@ -3,12 +3,20 @@ extends ../layout
 block content
 	h4 Edit Post
 	form#formAddPost(name="editpost",method="post", action="/posts/edit")
-		div.form-group
+		.form-group
 			label Title
 			input#idPost.form-control(type="hidden", name="id", value='#{post._id}')
 			input#author.form-control(type="hidden", name="author", value="#{user._id}")
 			input#titlePost.form-control(type="text", placeholder="Title of Post", name="title", value='#{post.title}') 
-		div.form-group
+		.form-group
 			label Content
 			textarea#contentPost.form-control(rows="10", name="content")= post.content
+		.form-group
+			label Category
+			select.form-control#category(name="category")
+				option(value="Life-Arts") Life/Arts
+				option(value="Technology") Technology
+				option(value="Culture-Recreation") Culture/Recreation
+				option(value="Science") Science
+				option(value="Other") Other
 		button#btnAddPost.btn.btn-primary(type="submit") Save

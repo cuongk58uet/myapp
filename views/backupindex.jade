@@ -1,0 +1,22 @@
+extends layout
+
+block content
+	#postList
+		table.table.table-striped
+			thead
+				th Title
+				th
+				th Actions
+				th
+			tbody
+block sidebar
+	if (!user)
+		b You aren't login. Please login here
+		a.btn.btn-primary.btn-lg.btn-block(href="/login") Login
+		<center><b>OR</b></center>
+		a.btn.btn-success.btn-lg.btn-block(href="/signup") SignUp
+		br
+	if (user)
+		p You are currently logged in as <b> #{user.display_name} </b>
+		a.btn.btn-success.btn-lg.btn-block(href="/logout") Logout
+		br

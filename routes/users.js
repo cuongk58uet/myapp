@@ -13,7 +13,7 @@ router.get('/', function (req, res) {
         if(err) return next(err);
         res.render('index', {
             'posts': posts,
-            title: 'Simple Forum Home',
+            title: 'Simple Forum',
             user: req.user,
         });
         //console.log(req.body);
@@ -42,7 +42,7 @@ router.get('/login', function(req, res, next) {
 		res.render('./users/login', { user : req.user });
 });
 
-router.post('/login', passport.authenticate('local', {successRedirect: '/posts', failureFlash: 'Invalid username or password.'}), function(req, res) {
+router.post('/login', passport.authenticate('local', {successRedirect: '/', failureFlash: 'Invalid username or password.'}), function(req, res) {
 
 });
 

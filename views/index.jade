@@ -2,21 +2,45 @@ extends layout
 
 block content
 	#postList
-		table.table.table-striped
-			thead
-				th Title
-				th
-				th Actions
-				th
-			tbody
+		include message.jade
+		if (posts)
+			each post, i in posts
+				.panel.panel-default
+					.panel-heading
+						h4=post.title
+					.panel-body
+						.contentpost(style="padding: 10px")
+							p(style='text-align: justify')= post.content
+							<small> <b>Created:</b> #{post.create_date.toDateString()} </small>
+							<small> | <b>Author:</b>  #{post.author.display_name} </small>
+							<small> | <b>Category:</b> #{post.category} </small>
+							small= ' | ' + post.comments.length + ' comments'
+							a.btn.btn-primary.btn-md(href='/posts/view/#{post._id}', style="float:right") Read more
 block sidebar
 	if (!user)
-		b You aren't login. Please login here
-		a.btn.btn-primary.btn-lg.btn-block(href="/login") Login
-		<center><b>OR</b></center>
-		a.btn.btn-success.btn-lg.btn-block(href="/signup") SignUp
-		br
+		.panel.panel-default
+			.panel-heading
+				b Recent Posts
+			.panel-body
+				each post, i in posts
+					a(href='/posts/view/#{post._id}')= post.title
+					br
 	if (user)
-		p You are currently logged in as <b> #{user.display_name} </b>
-		a.btn.btn-success.btn-lg.btn-block(href="/logout") Logout
-		br
+		.panel.panel-default
+			.panel-heading
+				b Recent Posts
+			.panel-body
+				each post, i in posts
+					a(href='/posts/view/#{post._id}')= post.title
+					br
+	.panel.panel-default
+		.panel-heading
+			h4 Category
+		.panel-body
+			ul
+				li: a(href="/posts/category/Life-Arts") Life/Arts
+				li: a(href="/posts/category/Technology") Technology
+				li: a(href="/posts/category/Culture-Recreation") Culture/Recreation
+				li: a(href="/posts/category/Science") Science
+				li: a(href="/posts/category/Other") Other
+			

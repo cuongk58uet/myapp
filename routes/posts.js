@@ -123,6 +123,7 @@ router.post('/edit', auth.isLogged,function(req, res, next) {
         post.title = req.body.title;
         post.content = req.body.content;
         post.modified_date = Date.now();
+        post.category = req.body.category;
         post.save(function(err){
             if(err){
                 req.session.message.error.push('Edit failed. Please try again!' + err);

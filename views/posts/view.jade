@@ -29,12 +29,15 @@ block content
 	else
 		a.btn.btn-success.btn-block.btn-lg(href="/login") Login to comment
 		br
-	each comment, i in post.comments
-		.panel.panel-default
-			.panel-heading
-				img.img-circle(src="/avatar/avatar-default.jpg", width=30, height=30)
-				&nbsp; 
-				b= comment.author
-			.panel-body
-				p= comment.content
-				small(style="float:right")= comment.date.toDateString()
+	if (post.comments.length == 0)
+		p No comments yet
+	else
+		each comment, i in post.comments
+			.panel.panel-default
+				.panel-heading
+					img.img-circle(src="/avatar/avatar-default.jpg", width=30, height=30)
+					&nbsp; 
+					b= comment.author
+				.panel-body
+					p= comment.content
+					small(style="float:right")= comment.date.toDateString()
